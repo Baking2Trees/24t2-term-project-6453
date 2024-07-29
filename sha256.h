@@ -14,4 +14,8 @@ void compute_SHA256(const unsigned char* data, size_t dataLen, unsigned char* ha
 std::string SHA256_hash_as_string(const unsigned char* data, size_t dataLen);
 // ^^^ Use this one for simplicity
 
+// This takes two hashes generated and returned by the above function and computes the hash of them both
+// Used in merkle tree construction
+std::string merkle_node_sha256_hash(std::string hash1, std::string hash2);
+
 #endif // SHA256_H
