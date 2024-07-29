@@ -1,12 +1,13 @@
 #include <iostream>
 
 #include "sha256.h"
+#include "merkle.h"
 
 int main (void) {
-    const unsigned char data[] = "hello world";
-    std::cout << "Hash function is working correctly if " << data << " hashes to: b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9\n";
-    std::cout << "Here is the computed hash for our implementation\n";
-    std::cout << "input: " << data << "\n";
-    std::cout << "hash: " << SHA256_hash_as_string(data, sizeof(data) - 1) << "\n";
+    // Create the merkle tree for a test file
+    char filename[] = "exampletexts/t8.shakespeare.txt";
+    merkle_tree test(filename);
+    std::cout << "root hash: " << test.root_node_->hash_ << "\n";
+
     return 0;
 }
