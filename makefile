@@ -11,7 +11,7 @@ LDFLAGS = -lssl -lcrypto
 TARGET = merkle
 
 # Source files
-SRCS = main.cpp sha256.cpp merkle.cpp
+SRCS = main.cpp sha256.cpp merkle.cpp comparison.cpp
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)
