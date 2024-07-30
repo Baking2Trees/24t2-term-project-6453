@@ -27,6 +27,17 @@ void analyse_changes(std::shared_ptr<merkle_node> cloud_mt, std::shared_ptr<merk
     }
     
     if (cloud_mt->hash_ != local_mt->hash_) {
+        // Would be indicate of a minor change
+        if (
+            cloud_mt->left_child_ == nullptr &&
+            cloud_mt->right_child_ == nullptr &&
+            local_mt->left_child_ == nullptr &&
+            local_mt->left_child_ == nullptr
+        ) {
+            blocks.push_back(cloud_mt->rightmost_block_);
+        }
+        
+        // Analyse children
         analyse_changes(cloud_mt->left_child_, local_mt->left_child_, blocks);
         analyse_changes(cloud_mt->right_child_, local_mt->right_child_, blocks);
     }
