@@ -1,5 +1,5 @@
-#ifndef COMPARISON_H
-#define COMPARISON_H
+#ifndef REQUEST_H
+#define REQUEST_H
 
 #include <vector>
 
@@ -12,4 +12,4 @@ std::string request_blocks(std::vector<int> missing_blocks, char *filename);
 //      4 bytes - size of block in bytes
 //      block content
 
-#endif // COMPARISON_H
+#endif // REQUEST_H
