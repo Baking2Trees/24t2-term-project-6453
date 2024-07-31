@@ -15,7 +15,7 @@ merkle_tree::merkle_tree(char* filename) {
     
     // // Move file pointer to store files size
     // std::fseek(file, 0, SEEK_END);
-    // long fileSize = std::ftell(file);
+    // long file_size = std::ftell(file);
     // std::fseek(file, 0, SEEK_SET); // Dont need this atm
 
     unsigned char data[BLOCK_SIZE];
