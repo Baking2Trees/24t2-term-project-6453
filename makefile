@@ -2,16 +2,16 @@
 CXX = g++
 
 # Compiler flags
-CXXFLAGS = -Wall -O2 -std=c++11
+CXXFLAGS = -Wall -O2 -std=c++11 -I$(shell brew --prefix openssl@3)/include
 
-# Include the OpenSSL library
-LDFLAGS = -lssl -lcrypto
+# OpenSSL library paths
+LDFLAGS = -L$(shell brew --prefix openssl@3)/lib -lssl -lcrypto
 
 # Target executable
 TARGET = merkle
 
 # Source files
-SRCS = main.cpp sha256.cpp merkle.cpp comparison.cpp request.cpp constants.cpp
+SRCS = main.cpp sha256.cpp merkle.cpp comparison.cpp request.cpp constants.cpp delete_file.cpp
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)
