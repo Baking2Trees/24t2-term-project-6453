@@ -69,8 +69,8 @@ This project implements a secure and efficient file-sharing system using Merkle 
   - **Authentication and Authorization:** Implement and verify user authentication and access control measures.
   - **Data Integrity:** Ensure that Merkle Trees are correctly implemented and verify data integrity across operations.
   - **Network Security:** Assess and implement security measures for data transmission and network communication.
-  - **Encryption & Decryption:** Verify that encryption and decryption processes are secure and correctly implemented.
   - **File Operations:** Validate secure handling of file addition, deletion, and modifications. Ensure proper management of authorized users.
+  - **Encryption & Decryption:** Verify that encryption and decryption processes are secure and correctly implemented.
   - **Error Handling:** Implement robust error handling mechanisms to manage and recover from issues related to security operations and maintain overall system reliability.
 
 - **Documentation:**
