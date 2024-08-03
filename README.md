@@ -8,9 +8,9 @@
 
 In modern file-sharing systems, users face several challenges including:
 
-- **Ensuring Consistency:** Ensuring all users have the most current version of a file.
-- **Efficient Data Transfer:** Transferring only necessary changes rather than entire file copies.
-- **Security:** Ensuring secure file sharing to prevent unauthorized access and maintain data integrity.
+- **Ensuring Consistency:** Making sure all users have the most current version of a file.
+- **Efficient Data Transfer:** Transferring only necessary changes rather than entire file copies between computers. 
+- **Security:** Ensuring that files are shared securely, preventing unauthorized access and maintaining data integrity.
 
 Our project addresses these challenges by simulating a file-sharing system on a local drive. Each directory represents a different user. When a file is altered, a Merkle tree of the file is created and sent to other directories. These directories identify missing parts, request this data, and receive it securely.
 
@@ -71,9 +71,10 @@ This project implements a secure and efficient file-sharing system using Merkle 
   - **Network Security:** Assess and implement security measures for data transmission and network communication.
   - **Encryption & Decryption:** Verify that encryption and decryption processes are secure and correctly implemented.
   - **File Operations:** Validate secure handling of file addition, deletion, and modifications. Ensure proper management of authorized users.
+  - **Error Handling:** Implement robust error handling mechanisms to manage and recover from issues related to security operations and maintain overall system reliability.
 
 - **Documentation:**
-  - Update the README with more detailed explanations and usage examples.
+  - Update the README with more detailed explanations and usage examples (along with newly made progress).
   - Provide examples of how to run and test the application.
 
 - **Additional Features:**
