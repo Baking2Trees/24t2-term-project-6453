@@ -29,11 +29,11 @@ This project implements a secure and efficient file-sharing system using Merkle 
   - **Status:** Basic implementation to test Merkle tree functionality and file deletion.
 
 - **`sha256.cpp` / `sha256.h`**
-  - **Function:** Contains implementation and declarations for SHA-256 hashing. This is used for creating hashes of file contents.
+  - **Function:** Contains implementation and declarations for SHA-256 hashing, used primarily in Merkle tree construction.
   - **Status:** Currently under development. Requires linking with OpenSSL for hashing functions.
 
 - **`merkle.cpp` / `merkle.h`**
-  - **Function:** Implements the Merkle Tree data structure. Handles tree construction, hashing, and root hash calculation.
+  - **Function:** Implements the Merkle Tree data structure. Handles tree construction, hashing, and root hash calculation. You can access fields of the Merkle Tree nodes down to the children for content differences.
   - **Status:** Basic functionality implemented. Further testing and integration required.
 
 - **`comparison.cpp` / `comparison.h`**
