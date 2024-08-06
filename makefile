@@ -11,7 +11,7 @@ LDFLAGS = -L$(shell brew --prefix openssl@3)/lib -lssl -lcrypto
 TARGET = merkle
 
 # Source files
-SRCS = main.cpp sha256.cpp merkle.cpp comparison.cpp request.cpp constants.cpp delete_file.cpp
+SRCS = main.cpp sha256.cpp merkle.cpp comparison.cpp request.cpp constants.cpp delete_file.cpp upload.cpp copy_file.cpp
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)
