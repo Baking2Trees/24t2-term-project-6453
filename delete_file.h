@@ -3,6 +3,6 @@
 
 #include <string>
 
-void deleteFile(const std::string& filename);
+void delete_file(const std::string& filename);
 
 #endif // DELETE_FILE_H
