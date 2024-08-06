@@ -2,7 +2,7 @@
 CXX = g++
 
 # Compiler flags
-CXXFLAGS = -Wall -O2 -std=c++11 -I$(shell brew --prefix openssl@3)/include
+CXXFLAGS = -Wall -O2 -std=c++11 -I$(shell brew --prefix openssl@3)/include -Wno-deprecated-declarations
 
 # OpenSSL library paths
 LDFLAGS = -L$(shell brew --prefix openssl@3)/lib -lssl -lcrypto
