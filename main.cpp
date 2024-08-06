@@ -1,17 +1,22 @@
 #include <iostream>
 #include "sha256.h"
 #include "merkle.h"
+#include "copy_file.h" 
 #include "delete_file.h"
 #include "upload.h"
 #include "download.h"
 
 int main() {
     try {
-        // initial
-        std::string uploadDirectory = "uploaded_files";
-        MerkleTreeManager uploadManager(uploadDirectory);
-        Downloader downloader;
+        // Set up file paths and directories
+        const std::string uploadDirectory = "uploaded_files";
+        const std::string privateKeyPath = "path/to/private/key.pem";
+        const std::string publicKeyPath = "path/to/public/key.pem";
+        const std::string testFilePath = "exampletexts/t8.shakespeare.txt";
 
+        // Initialize the FileUploader
+        FileUploader uploader(uploadDirectory, privateKeyPath, publicKeyPath);
+    
         while (true) {
             std::cout << "\nChoose an operation:\n";
             std::cout << "1. Upload a file\n";
@@ -19,25 +24,22 @@ int main() {
             std::cout << "3. Copy a file\n";
             std::cout << "4. Delete a file\n";
             std::cout << "5. Exit\n";
-            std::cout << "Enter your choice (1-4): ";
+            std::cout << "Enter your choice (1-5): ";
 
             int choice;
             std::cin >> choice;
-
+            std::cin.ignore(); // To clear the newline character from the input buffer
 
             switch (choice) {
-
-            case 1: {
-                //upload file
-
-                std::string uploadDirectory = "uploaded_files"; // set directory
-                MerkleTreeManager manager(uploadDirectory);
-
-                // upload and build merkle tree
-                std::string fileToUpload = "exampletexts/t8.shakespeare.txt";
-                manager.processFile(fileToUpload);
-                break;
-            }
+                case 1: {
+                    // Upload file
+                    std::string fileToUpload = "exampletexts/t8.shakespeare.txt";
+                    if (uploader.uploadFile(fileToUpload)) {
+                        std::cout << "File uploaded successfully.\n";
+                        // You may want to rebuild or update the Merkle tree here
+                    }
+                    break;
+                }
 
             case 2: {
                 // Create the merkle tree for a test file
