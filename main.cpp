@@ -19,8 +19,8 @@ int main() {
             std::cout << "2. Create the Merkle tree\n";
             std::cout << "3. Copy a file\n";
             std::cout << "4. Delete a file\n";
-            std::cout << "5. Exit\n";
-            std::cout << "Enter your choice (1-5): ";
+            std::cout << "0. Exit\n";
+            std::cout << "Enter your choice (0-4): ";
 
             int choice;
             std::cin >> choice;
@@ -62,7 +62,7 @@ int main() {
                     break;
                 }
 
-                case 5: {
+                case 0: {
                     std::cout << "Exiting program.\n";
                     return 0; // Exit the program
                 }
