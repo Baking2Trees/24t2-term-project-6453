@@ -45,7 +45,7 @@ void analyse_changes(std::shared_ptr<merkle_node> cloud_mt, std::shared_ptr<merk
     // Otherwise do nothing
 }
 
-std::vector<int> comparision(merkle_tree cloud_file_mt, char *filename) {
+std::vector<int> comparison(merkle_tree cloud_file_mt, char *filename) {
     merkle_tree local_file_mt = merkle_tree(filename);
     std::vector<int> needed_blocks;
 
