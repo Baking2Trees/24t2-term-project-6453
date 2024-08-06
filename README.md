@@ -25,83 +25,202 @@ This project implements a secure and efficient file-sharing system using Merkle 
 ### Files and Their Functions
 
 - **`main.cpp`**
-  - **Function:** Entry point of the program. Creates a Merkle tree for a test file and performs file operations (e.g., deleting a file).
-  - **Status:** Basic implementation to test Merkle tree functionality and file deletion.
+  - **Function:** Entry point of the program. Currently utilising a menu feature for implementation testing.
+  - **Status:** Basic implementation to test Merkle tree functionality, file copy, and file deletion.
 
-- **`sha256.cpp` / `sha256.h`**
-  - **Function:** Contains implementation and declarations for SHA-256 hashing, used primarily in Merkle tree construction.
-  - **Status:** Currently under development. Requires linking with OpenSSL for hashing functions.
+1. **Data Integrity**
 
-- **`merkle.cpp` / `merkle.h`**
-  - **Function:** Implements the Merkle Tree data structure. Handles tree construction, hashing, and root hash calculation. You can access fields of the Merkle Tree nodes down to the children for content differences.
-  - **Status:** Basic functionality implemented. Further testing and integration required.
+  - **`merkle.cpp` / `merkle.h`**
+    - **Function:** Constructs a Merkle tree from file data. Handles tree construction, hashing, and root hash calculation. Access fields of the Merkle Tree nodes down to the children for content differences. 
+    - **Functions:** 
+      - `merkle_tree(filename);`
+    - **Status:** Basic functionality implemented. Further testing and integration required.
 
-- **`comparison.cpp` / `comparison.h`**
-  - **Function:** Provides functions to compare Merkle Trees and check for differences.
-  - **Status:** Implementation needed to ensure proper comparison of trees.
+  - **`sha256.cpp` / `sha256.h`**
+    - **Function:** Contains implementation and declarations for SHA-256 hashing, used primarily in Merkle tree construction.
+    - **Functions:**
+      - `compute_SHA256(data, dataLen, hash);`
+      - `SHA256_hash_as_string(data, dataLen);`
+      - `merkle_node_sha256_hash(hash1, hash2);`
+    - **Status:** Currently under development. Requires linking with OpenSSL for hashing functions.
 
-- **`request.cpp` / `request.h`**
-  - **Function:** Manages file requests, including handling missing blocks and reconstructing files.
-  - **Status:** Basic functionality implemented. May need enhancements based on further testing.
+  - **`comparison.cpp` / `comparison.h`**
+    - **Function:** Includes functions for comparing Merkle trees between a cloud file and a local file and analyzing changes between them.
+    - **Functions:**
+      - Main function: `comparison(cloud_file_mt, filename);`
+      - Helper function: `analyse_changes(cloud_mt, local_mt, blocks);`
+    - **Status:** Implementated, not tested (ensuring proper comparison of trees).
 
-- **`constants.cpp` / `constants.h`**
-  - **Function:** Contains constants used throughout the project.
-  - **Status:** Implemented.
+2. **Authentication & Authorization**
 
-- **`delete_file.cpp` / `delete_file.h`**
-  - **Function:** Provides functionality to delete files and update the Merkle Tree accordingly.
-  - **Status:** Basic implementation completed. Error handling needed.
+  - **`auth_management.cpp` / `auth_management.h`**
+    - **Function:** Manage a list of authorized users, including adding, removing, and updating user permissions and listing users in the system.
+    - **Functions:**
+      - `addUser(user)`
+      - `removeUser(user)`
+      - `updateUserPermissions(userList)`
+      - `listUsers()`
+    - **Status:** Implementation needed.
+
+  - **`auth.cpp` / `auth.h`**
+    - **Function:** Authenticates a user based on provided username and password.
+    - **Functions:**
+      - `authenticate(username, password)`
+    - **Status:** Implementation needed.
+
+  - **`user_management.cpp` / `user_management.h`**
+    - **Function:** Manages user data and access controls within the system, including retrieving and updating user information, managing passwords, and listing user roles and their associated permissions.
+    - **Functions:**
+      - `getUserInfo(userId)`
+      - `updateUserInfo(userId, newInfo)`
+      - `changePassword(userId, newPassword)`
+      - `listUserRoles()`
+    - **Status:** Implementation needed.
+
+  - **`file_permissions.cpp` / `file_permissions.h`**
+    - **Function:** Sets and checks permissions of a user on a specific file.
+    - **Functions:**
+      - `setPermission(fileId, userId, permissionLevel)`
+      - `checkPermission(fileId, userId)`
+    - **Status:** Implementation needed.
+
+3. **File Operations**
+
+  - **`constants.cpp` / `constants.h`**
+    - **Function:** Generates a filename for requesting blocks.
+    - **Functions:**
+      - `request_blocks_file_name(missing_blocks, filename)`
+    - **Status:** Implemented, not tested.
+
+  - **`upload.cpp` / `upload.h`**
+    - **Function:** Handles file upload operations, ensuring integration with Merkle Tree to track new files.
+    - **Functions:**
+      - Public Methods:
+        - `FileUploader(directory, privateKeyPath, publicKeyPath)`
+        - `~FileUploader()`
+        - `uploadFile(filePath)`
+      - Private Methods:
+        - `encryptData(data)`
+        - `signData(data)`
+        - `getFileName(filePath)`
+      - Static Methods:
+        - `loadPrivateKey(keyPath)`
+        - `loadPublicKey(keyPath)`
+    - **Status:** Implementated, not tested.
+
+  - **`download.cpp` / `download.h`**
+    - **Function:** Handles file download operations.
+    - **Status:** Implementation needed.
+
+  - **`copy_file.cpp` / `copy_file.h`**
+    - **Function:** Copies the contents of a source file to a destination file.
+    - **Functions:**
+      - `copyFile(sourceFilename, destinationFilename)`
+    - **Status:** Implementated.
+   
+  - **`delete_file.cpp` / `delete_file.h`**
+    - **Function:** Provides functionality to delete files and update the Merkle Tree accordingly.
+    - **Functions:**
+      - `deleteFile(filename)`
+    - **Status:** Basic implementation completed. Error handling needed.
+
+  - **`modify_file.cpp` / `modify_file.h`**
+    - **Function:** Modifies an existing file, including potential changes to contents or metadata.
+    - **Functions:**
+      - `modify(filename)`
+    - **Status:** Implementation needed.
+
+  - **`file_versioning.cpp` / `file_versioning.h`**
+    - **Function:** Manages file versions.
+    - **Functions:**
+      - `file_versioning(filename)`
+    - **Status:** New feature. Implementation required.
+
+4. **Encryption & Decryption**
+
+  - **`encryption.cpp` / `encryption.h`**
+    - **Function:** Verifies the requester is a trusted party, encrypts the required data, and transmits it over a public network.
+    - **Functions:**
+      - `load_private_key(private_key_str);`
+      - `sign_data(rsa, data);`
+      - `EncryptAndSend(requestedData, requesterPublicKey, senderPrivateKey, encryptedDataFilename, signatureFilename);`
+    - **Status:** Implemented, not tested.
+
+  - **`decryption.cpp` / `decryption.h`**
+    - **Function:** Verifies the sender is a trusted party by verifying signatures to ensure integrity and authenticity, decrypts the data using the receiver's private key.
+    - **Functions:**
+      - `load_private_key(private_key_str);`
+      - `load_encrypted_data(filename);`
+      - `verify_signature(data, signature, sender_public_key);`
+      - `rsa_decrypt(encrypted_bytes, private_key);`
+      - `ReceiveAndDecrypt(encryptedDataFilename, senderSignature, senderPublicKeyStr, receiverPrivateKeyStr, decryptedData);`
+    - **Status:** Implemented, not tested.
+
+5. **Network Security** 
+  - **`request.cpp` / `request.h`**
+    - **Function:** Handles the request for missing data blocks from a cloud file. This file can then be used to reconstruct the data in the local system.
+    - **Functions:**
+      - `requestblock(missingBlocks, filename)`
+    - **Status:** Basic functionality implemented. Additional components may be required for full data reconstruction.
+
+  - **`reconstruction.cpp / reconstruction.h`**
+    - **Function:** Manages the downloading of requested data blocks and reconstructs the original file from these blocks. It ensures data integrity and authenticity by verifying the provided signature and properly reconstructing the file from the downloaded blocks.
+    - **Functions:**
+      - `downloadAndReconstruct(requestedBlocks, signature, filename)`
+    - **Status:** Implementaion needed. Further discussions are needed to finalize the description and functionality details.
+   
+  - **`network.cpp` / `network.h`**
+    - **Function:** Logic system that integrates functionalities, simulating a cloud environment on a local drive and handling network operations such as establishing connections and managing data transfers.
+    - **Functions:**
+      - `network()`
+    - **Status:** Implementation needed.
+
+6. **Error Handling**
+  - **Function:** Error handling should be integrated into all relevant functions, including file operations, network security, and Merkle Tree operations.
+  - **Status:** To be implemented across all relevant files.
 
 ## To Do
 
-- **File Addition/Upload:**
-  - Implement functionality for adding and uploading files.
-  - Ensure integration with Merkle Tree to track new files.
+- **Complete Implementation**
+  - Refer to the [Code Tracker](https://docs.google.com/spreadsheets/d/1dv-hqRM0pZDpCi_d-IG2j-KdyvS5IpuQRsORF4tX5NY/edit?usp=sharing) for progress details and tasks outlined.
 
-- **Enhance Error Handling:**
-  - Improve error handling for file operations and network issues.
+- **Enhance Error Handling**
+  - Improve handling for file operations and network issues.
 
 - **Testing and Validation:**
-  - Test all functionalities thoroughly.
+  - Conduct comprehensive testing of all functionalities.
   - Ensure that the Merkle Tree correctly tracks changes and verifies data integrity.
 
+- **Code Styling and Refactoring:**
+  - Review and apply consistent coding styles and formatting.
+    - Ensure proper use of const.
+    - Review error handling methods and return statements.
+    - Standardize file and header naming conventions.
+  - Enhance comments and documentation within the code.
+
 - **Security Analysis:**
-  - **Authentication and Authorization:** Implement and verify user authentication and access control measures.
-  - **Data Integrity:** Ensure that Merkle Trees are correctly implemented and verify data integrity across operations.
-  - **Network Security:** Assess and implement security measures for data transmission and network communication.
-  - **File Operations:** Validate secure handling of file addition, deletion, and modifications. Ensure proper management of authorized users.
-  - **Encryption & Decryption:** Verify that encryption and decryption processes are secure and correctly implemented.
-  - **Error Handling:** Implement robust error handling mechanisms to manage and recover from issues related to security operations and maintain overall system reliability.
+  - **1. Data Integrity:**
+    - Ensure that Merkle Trees are correctly implemented and verify data integrity across operations.
+  - **2. Authentication and Authorization:**
+    - Implement and verify user authentication and access control measures.
+  - **3. File Operations:**
+    - Validate secure handling of file addition, deletion, and modifications. Ensure proper management of authorized users.
+  - **4. Encryption & Decryption:**
+    - Verify that encryption and decryption processes are secure and correctly implemented.
+  - **5. Network Security:**
+    - Assess and implement security measures for data transmission and network communication.
+  - **6. Error Handling:**
+    - Implement robust error handling mechanisms to manage and recover from issues related to security operations and maintain overall system reliability.
 
-- **Documentation:**
-  - Update the README with more detailed explanations and usage examples (along with newly made progress).
-  - Provide examples of how to run and test the application.
+- **Documentation**
+  - Keep the README up-to-date with detailed explanations and usage examples.
 
-- **Additional Features:**
-  - Consider adding features such as file versioning, user management, and authentication.
-
-### Functions
-
-- **`Upload(filename)`**
-  - Sender generates a Merkle tree of its altered files and sends this to other users on the drive.
-
-- **`RequestBlocks(missingBlocks, senderID)`**
-  - Handles the request for missing blocks identified in the comparison phase.
-
-- **`EncryptAndSend(requestedData, requesterPublicKey)`**
-  - Verifies the requester is a trusted party, encrypts the required data, and transmits it over a public network.
-
-- **`ReceiveAndDecrypt(encryptedData, senderSignature)`**
-  - Verifies the sender is a trusted party, decrypts the data using the receiver's private key.
-
-- **`Download(requestedData, signature)`**
-  - Verifies the sender is a trusted party, decrypts the data, and updates the local file with the decrypted data.
-
-- **`ManageAuthorizedUsers(userList)`**
-  - Manages and maintains a centralized list of authorized users. Ensures that file access permissions are enforced and updated as necessary.
-
-- **`Network()`**
-  - A logic system that integrates the above functionalities, simulating a cloud environment on a local drive.
+- **Additional Features**
+  - Consider implementing:
+    - File versioning
+    - User management
+    - Authentication
+  - (This is an expansion to our group's original term project abstract)
 
 ## Getting Started
 
