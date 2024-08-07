@@ -21,7 +21,7 @@ std::vector<unsigned char> rsa_decrypt(const std::vector<unsigned char>& encrypt
 
 // Function to receive and decrypt data
 bool ReceiveAndDecrypt(const std::string& encryptedDataFilename, 
-                       const std::vector<unsigned char>& senderSignature, 
+                       const std::string& signatureFilename, 
                        const std::string& senderPublicKeyStr, 
                        const std::string& receiverPrivateKeyStr, 
                        std::vector<unsigned char>& decryptedData);
