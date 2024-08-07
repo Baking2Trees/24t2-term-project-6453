@@ -47,6 +47,10 @@ std::vector<int> comparison(merkle_tree cloud_file_mt, const char *filename) {
     merkle_tree local_file_mt = merkle_tree(filename);
     std::vector<int> needed_blocks;
 
+    // Always add the last block
+    needed_blocks.push_back(local_file_mt.root_node_->rightmost_block_);
+    needed_blocks.push_back(cloud_file_mt.root_node_->rightmost_block_);
+
     // Analyse changes
     analyse_changes(cloud_file_mt.root_node_, local_file_mt.root_node_, needed_blocks);
 
