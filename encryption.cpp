@@ -7,6 +7,51 @@
 #include <fstream>
 #include <vector>
 
+// Function to load RSA public key from a PEM-formatted string
+RSA* load_public_key(const std::string& public_key_str) {
+    RSA* rsa = nullptr;
+    BIO* bio = BIO_new_mem_buf(public_key_str.data(), public_key_str.size());
+    if (bio == nullptr) {
+        std::cerr << "Error creating BIO object\n";
+        return nullptr;
+    }
+
+    rsa = PEM_read_bio_RSA_PUBKEY(bio, &rsa, nullptr, nullptr);
+    if (rsa == nullptr) {
+        std::cerr << "Error loading public key\n";
+    }
+
+    BIO_free(bio);
+    return rsa;
+}
+
+// Function to encrypt data using RSA public key
+std::string encrypt_data(RSA* rsa, const std::string& data) {
+    // Determine the maximum size of the data that can be encrypted
+    int rsa_size = RSA_size(rsa);
+    int padding = RSA_PKCS1_OAEP_PADDING; // Use PKCS#1 OAEP padding
+    int encrypted_size = rsa_size;
+    std::vector<unsigned char> encrypted_data(encrypted_size);
+
+    // Encrypt the data
+    int result = RSA_public_encrypt(data.size(), 
+                                   reinterpret_cast<const unsigned char*>(data.c_str()), 
+                                   encrypted_data.data(), 
+                                   rsa, 
+                                   padding);
+    
+    if (result == -1) {
+        char err[130];
+        ERR_load_crypto_strings();
+        ERR_error_string(ERR_get_error(), err);
+        std::cerr << "Encryption error: " << err << "\n";
+        return "";
+    }
+
+    // Resize the vector to the actual encrypted size
+    encrypted_data.resize(result);
+    return std::string(encrypted_data.begin(), encrypted_data.end());
+}
 // Function to load RSA private key from a PEM-formatted string
 RSA* load_private_key(const std::string& private_key_str) {
     RSA* rsa = nullptr;
