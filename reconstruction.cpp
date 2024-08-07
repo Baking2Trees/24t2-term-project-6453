@@ -11,7 +11,7 @@
 //      4 bytes - size of block in bytes
 //      block content
 
-void reconstruct(char *transfer_filename, char *filename) {
+void reconstruct(const char *transfer_filename, const char *filename) {
     FILE *transfer_file = std::fopen(transfer_filename, "rb");
     if (!transfer_file) {
         std::cerr << "Unable to open transfer_file\n";

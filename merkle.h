@@ -33,7 +33,7 @@ class merkle_node {
 class merkle_tree { 
  public:
     // Only valid constructor - creates a merkle tree with a given filename
-    merkle_tree(char *filename);
+    merkle_tree(const char *filename);
 
     std::shared_ptr<merkle_node> root_node_;
 };

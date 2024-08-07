@@ -6,7 +6,7 @@
 #include "merkle.h"
 #include "constants.h"
 
-merkle_tree::merkle_tree(char* filename) {
+merkle_tree::merkle_tree(const char* filename) {
     FILE* file = std::fopen(filename, "rb");
     if (!file) {
         std::cerr << "Could not open the file.\n";

@@ -6,7 +6,7 @@
 #include "request.h"
 #include "constants.h"
 
-std::string request_blocks(std::vector<int> missing_blocks, char *filename) {
+std::string request_blocks(std::vector<int> missing_blocks, const char *filename) {
     std::string transfer_data_filename = request_blocks_file_name(missing_blocks, filename);
 
     FILE* cloud_file = std::fopen(filename, "rb");
