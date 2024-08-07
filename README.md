@@ -20,6 +20,35 @@ With increasing data breaches and integrity concerns, secure file sharing is cru
 
 This project implements a secure and efficient file-sharing system using Merkle Trees. The goal is to simulate file sharing on a local drive, where directories represent users, and use Merkle Trees to track changes and ensure data integrity. The project involves file operations (addition, deletion, and uploading) and uses cryptographic hashing to ensure consistency and security.
 
+## Getting Started
+
+### Prerequisites
+
+- Install OpenSSL:
+  ```bash
+  brew install openssl
+
+### Building the project
+
+1. Clone this repository using (either HTTPS/SSH/CLI):
+   ```bash
+   // SSH
+    git clone https://github.com/Baking2Trees/24t2-term-project-6453.git
+   
+2. Navigate to the project directory:
+    ```bash
+    cd <repository-directory>
+
+3. Run make to build the project:
+    ```bash
+    make
+
+### Running the application
+
+- Execute the following command to run the application:
+   ```bash
+    ./merkle
+
 ## Current Progress
 
 ### Files and Their Functions
@@ -34,7 +63,7 @@ This project implements a secure and efficient file-sharing system using Merkle 
     - **Function:** Constructs a Merkle tree from file data. Handles tree construction, hashing, and root hash calculation. Access fields of the Merkle Tree nodes down to the children for content differences. 
     - **Functions:** 
       - `merkle_tree(filename);`
-    - **Status:** Basic functionality implemented. Further testing and integration required.
+    - **Status:** Implemented. 
 
   - **`sha256.cpp` / `sha256.h`**
     - **Function:** Contains implementation and declarations for SHA-256 hashing, used primarily in Merkle tree construction.
@@ -42,16 +71,21 @@ This project implements a secure and efficient file-sharing system using Merkle 
       - `compute_SHA256(data, dataLen, hash);`
       - `SHA256_hash_as_string(data, dataLen);`
       - `merkle_node_sha256_hash(hash1, hash2);`
-    - **Status:** Currently under development. Requires linking with OpenSSL for hashing functions.
+    - **Status:** Implemented. 
 
   - **`comparison.cpp` / `comparison.h`**
     - **Function:** Includes functions for comparing Merkle trees between a cloud file and a local file and analyzing changes between them.
     - **Functions:**
       - Main function: `comparison(cloud_file_mt, filename);`
       - Helper function: `analyse_changes(cloud_mt, local_mt, blocks);`
-    - **Status:** Implementated, not tested (ensuring proper comparison of trees).
+    - **Status:** Implemented. 
 
 2. **Authentication & Authorization**
+
+For this section, user files are based on assumptions that:
+
+a) User authorization is required to access and use any of the functions.  
+b) All communication channels, file systems, and storage are secure against unauthorized access and tampering.
 
   - **`auth_management.cpp` / `auth_management.h`**
     - **Function:** Manage a list of authorized users, including adding, removing, and updating user permissions and listing users in the system.
@@ -90,7 +124,7 @@ This project implements a secure and efficient file-sharing system using Merkle 
     - **Function:** Generates a filename for requesting blocks.
     - **Functions:**
       - `request_blocks_file_name(missing_blocks, filename)`
-    - **Status:** Implemented, not tested.
+    - **Status:** Implemented. 
 
   - **`upload.cpp` / `upload.h`**
     - **Function:** Handles file upload operations, ensuring integration with Merkle Tree to track new files.
@@ -106,23 +140,23 @@ This project implements a secure and efficient file-sharing system using Merkle 
       - Static Methods:
         - `loadPrivateKey(keyPath)`
         - `loadPublicKey(keyPath)`
-    - **Status:** Implementated, not tested.
+    - **Status:** Implemented. 
 
   - **`download.cpp` / `download.h`**
     - **Function:** Handles file download operations.
-    - **Status:** Implementation needed.
+    - **Status:** Implemented. 
 
   - **`copy_file.cpp` / `copy_file.h`**
     - **Function:** Copies the contents of a source file to a destination file.
     - **Functions:**
       - `copyFile(sourceFilename, destinationFilename)`
-    - **Status:** Implementated.
+    - **Status:** Implemented. 
    
   - **`delete_file.cpp` / `delete_file.h`**
     - **Function:** Provides functionality to delete files and update the Merkle Tree accordingly.
     - **Functions:**
       - `deleteFile(filename)`
-    - **Status:** Basic implementation completed. Error handling needed.
+    - **Status:** Implemented. 
 
   - **`modify_file.cpp` / `modify_file.h`**
     - **Function:** Modifies an existing file, including potential changes to contents or metadata.
@@ -134,7 +168,7 @@ This project implements a secure and efficient file-sharing system using Merkle 
     - **Function:** Manages file versions.
     - **Functions:**
       - `file_versioning(filename)`
-    - **Status:** New feature. Implementation required.
+    - **Status:** New feature. Further implementation required.
 
 4. **Encryption & Decryption**
 
@@ -161,19 +195,19 @@ This project implements a secure and efficient file-sharing system using Merkle 
     - **Function:** Handles the request for missing data blocks from a cloud file. This file can then be used to reconstruct the data in the local system.
     - **Functions:**
       - `requestblock(missingBlocks, filename)`
-    - **Status:** Basic functionality implemented. Additional components may be required for full data reconstruction.
+    - **Status:** Implemented.
 
   - **`reconstruction.cpp / reconstruction.h`**
     - **Function:** Manages the downloading of requested data blocks and reconstructs the original file from these blocks. It ensures data integrity and authenticity by verifying the provided signature and properly reconstructing the file from the downloaded blocks.
     - **Functions:**
       - `downloadAndReconstruct(requestedBlocks, signature, filename)`
-    - **Status:** Implementaion needed. Further discussions are needed to finalize the description and functionality details.
+    - **Status:** Implemented.
    
   - **`network.cpp` / `network.h`**
     - **Function:** Logic system that integrates functionalities, simulating a cloud environment on a local drive and handling network operations such as establishing connections and managing data transfers.
     - **Functions:**
       - `network()`
-    - **Status:** Implementation needed.
+    - **Status:** Implementation required. Additional components may be required for further details.
 
 6. **Error Handling**
   - **Function:** Error handling should be integrated into all relevant functions, including file operations, network security, and Merkle Tree operations.
@@ -200,18 +234,18 @@ This project implements a secure and efficient file-sharing system using Merkle 
 
 - **Security Analysis:**
   - **1. Data Integrity:**
-    - Ensure that Merkle Trees are correctly implemented and verify data integrity across operations.
+    - Ensure that Merkle Trees are correctly implemented and updated to verify data integrity across operations. Any changes to files should be reflected in the corresponding Merkle trees to detect tampering or corruption.
   - **2. Authentication and Authorization:**
-    - Implement and verify user authentication and access control measures.
+    - Implement and verify user authentication and access control measures by ensuring that only authorized users can perform file operations.
   - **3. File Operations:**
-    - Validate secure handling of file addition, deletion, and modifications. Ensure proper management of authorized users.
+    - Validate secure handling of file addition, deletion, and modifications. Ensure proper management of authorized users and update Merkle trees accordingly to maintain data integrity.
   - **4. Encryption & Decryption:**
     - Verify that encryption and decryption processes are secure and correctly implemented.
   - **5. Network Security:**
-    - Assess and implement security measures for data transmission and network communication.
+    - Assess and implement security measures for data transmission and network communication. Ensure that data is protected from interception and tampering during transit.
   - **6. Error Handling:**
-    - Implement robust error handling mechanisms to manage and recover from issues related to security operations and maintain overall system reliability.
-
+    - Implement robust error handling mechanisms to manage and recover from issues related to security operations and maintain overall system reliability. Ensure that any errors in file operations or Merkle tree updates are properly logged and addressed.
+   
 - **Documentation**
   - Keep the README up-to-date with detailed explanations and usage examples.
 
@@ -221,32 +255,3 @@ This project implements a secure and efficient file-sharing system using Merkle 
     - User management
     - Authentication
   - (This is an expansion to our group's original term project abstract)
-
-## Getting Started
-
-### Prerequisites
-
-- Install OpenSSL:
-  ```bash
-  brew install openssl
-
-### Building the project
-
-1. Clone this repository using (either HTTPS/SSH/CLI):
-   ```bash
-   // SSH
-    git clone https://github.com/Baking2Trees/24t2-term-project-6453.git
-   
-2. Navigate to the project directory:
-    ```bash
-    cd <repository-directory>
-
-3. Run make to build the project:
-    ```bash
-    make
-
-### Running the application
-
-- Execute the following command to run the application:
-   ```bash
-    ./merkle
