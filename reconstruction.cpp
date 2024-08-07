@@ -56,6 +56,17 @@ void reconstruct(const char *transfer_filename, const char *filename) {
                 fputc(byte, cloud_file);
             }
 
+            if (block_size < BLOCK_SIZE) {
+                // truncate rest of file
+                int fd = fileno(cloud_file);
+                ftruncate(fd, byte_index + block_size);
+                // Delete transfer file
+                std::fclose(transfer_file);
+                std::remove(transfer_filename);
+                std::fclose(cloud_file);
+                return;
+            }
+
             // move file pointer back to start for safety
             std::fseek(cloud_file, 0, SEEK_SET);
         } else {
@@ -65,6 +76,7 @@ void reconstruct(const char *transfer_filename, const char *filename) {
             // Delete transfer file
             std::fclose(transfer_file);
             std::remove(transfer_filename);
+            std::fclose(cloud_file);
             return;
         }
     }
