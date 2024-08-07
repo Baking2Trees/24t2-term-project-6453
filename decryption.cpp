@@ -7,6 +7,24 @@
 #include <fstream>
 #include <vector>
 
+// Function to load RSA public key from a PEM-formatted string
+RSA* load_public_key(const std::string& public_key_str) {
+    RSA* rsa = nullptr;
+    BIO* bio = BIO_new_mem_buf(public_key_str.data(), public_key_str.size());
+    if (bio == nullptr) {
+        std::cerr << "Error creating BIO object\n";
+        return nullptr;
+    }
+
+    rsa = PEM_read_bio_RSA_PUBKEY(bio, &rsa, nullptr, nullptr);
+    if (rsa == nullptr) {
+        std::cerr << "Error loading public key\n";
+    }
+
+    BIO_free(bio);
+    return rsa;
+}
+
 // Function to load RSA private key from a string
 RSA* load_private_key(const std::string& private_key_str) {
     RSA* rsa = nullptr;
@@ -36,6 +54,19 @@ std::vector<unsigned char> load_encrypted_data(const std::string& filename) {
     std::vector<unsigned char> data((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
     in.close();
     return data;
+}
+
+// Function to load the signature from a file
+std::vector<unsigned char> load_signature(const std::string& filename) {
+    std::ifstream in(filename, std::ios::binary);
+    if (!in) {
+        std::cerr << "Failed to open signature file: " << filename << "\n";
+        return {};
+    }
+
+    std::vector<unsigned char> signature((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+    in.close();
+    return signature;
 }
 
 // Function to verify the signature using the sender's public key
@@ -86,7 +117,7 @@ std::vector<unsigned char> decrypt_data(const std::vector<unsigned char>& encryp
 
 // Function to receive and decrypt data
 bool ReceiveAndDecrypt(const std::string& encryptedDataFilename, 
-                       const std::vector<unsigned char>& senderSignature, 
+                       const std::string& signatureFilename, 
                        const std::string& senderPublicKeyStr, 
                        const std::string& receiverPrivateKeyStr, 
                        std::vector<unsigned char>& decryptedData) {
@@ -101,6 +132,14 @@ bool ReceiveAndDecrypt(const std::string& encryptedDataFilename,
     std::vector<unsigned char> encryptedData = load_encrypted_data(encryptedDataFilename);
     if (encryptedData.empty()) {
         std::cerr << "Failed to load encrypted data\n";
+        RSA_free(sender_public_key);
+        return false;
+    }
+
+    // Load the sender's signature from the file
+    std::vector<unsigned char> senderSignature = load_signature(signatureFilename);
+    if (senderSignature.empty()) {
+        std::cerr << "Failed to load signature\n";
         RSA_free(sender_public_key);
         return false;
     }
