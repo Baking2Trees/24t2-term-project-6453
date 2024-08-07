@@ -8,27 +8,23 @@ void analyse_changes(std::shared_ptr<merkle_node> cloud_mt, std::shared_ptr<merk
         // If cloud node and local node not at chilren - search children
         // If cloud node is at children but local node is not - add all children of local node (deletion)
         // If local at children and cloud node is not - add all children of cloud node
-
     if (cloud_mt == nullptr || local_mt == nullptr) {
         if (cloud_mt == nullptr && local_mt == nullptr) return;
-        
         // If cloud is empty but local is not - > add all children of local
         if (cloud_mt == nullptr) {
-            for (int i = cloud_mt->leftmost_block_; i <= cloud_mt->rightmost_block_; i++) {
+            for (int i = local_mt->leftmost_block_; i <= local_mt->rightmost_block_; i++) {
                 blocks.push_back(i);
             }
         }
 
         // If local is empty but cloud is not - > add all children of cloud
         if (local_mt == nullptr) {
-            for (int i = local_mt->leftmost_block_; i <= local_mt->rightmost_block_; i++) {
+            for (int i = cloud_mt->leftmost_block_; i <= cloud_mt->rightmost_block_; i++) {
                 blocks.push_back(i);
             }
         }
-    }
-    
-    if (cloud_mt->hash_ != local_mt->hash_) {
-        //std::cout << "Currently comparing: " << cloud_mt->hash_ << " to " << local_mt->hash_ << "\n";
+    } else if (cloud_mt->hash_ != local_mt->hash_) {
+        // std::cout << "Currently comparing: " << cloud_mt->hash_ << " to " << local_mt->hash_ << "\n";
 
         // Would be indicate of a minor change
         if (

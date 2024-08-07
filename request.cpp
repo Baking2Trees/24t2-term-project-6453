@@ -29,6 +29,8 @@ std::string request_blocks(std::vector<int> missing_blocks, const char *filename
 
     for (int i = 0; i < missing_blocks.size(); i++) {
         int block_number = missing_blocks[i];
+
+        // std::cout << "writing block number: " << block_number << "\n";
         
         // Write block number to file
         fwrite(&block_number, sizeof(int), 1, transfer_file);
@@ -51,7 +53,7 @@ std::string request_blocks(std::vector<int> missing_blocks, const char *filename
         std::fseek(cloud_file, byte_index, SEEK_SET);
         
         // Move (size) num bytes
-        for (int i = 0; i < file_size; i++) {
+        for (int i = 0; i < size; i++) {
             char byte = fgetc(cloud_file);
             fputc(byte, transfer_file);
         }

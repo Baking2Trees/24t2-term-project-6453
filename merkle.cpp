@@ -30,8 +30,6 @@ merkle_tree::merkle_tree(const char* filename) {
 
     // Case of empty file
     if (file_size == 0) {
-        std::cout << "file size should be 0?\n";
-        
         std::string hash = SHA256_hash_as_string(data, 0);
         std::shared_ptr<merkle_node> new_child(new merkle_node(hash, block_number));
         nodes.push_back(new_child);

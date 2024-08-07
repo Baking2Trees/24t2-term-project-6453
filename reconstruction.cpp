@@ -19,7 +19,7 @@ void reconstruct(const char *transfer_filename, const char *filename) {
         std::exit(1);
     }
     
-    FILE *cloud_file = std::fopen(filename, "w+");
+    FILE *cloud_file = std::fopen(filename, "r+");
     if (!cloud_file) {
         // File could be new here - if is this case we need to change some version of code (check with Josh)
         std::cerr << "Unable to open local version of file\n";

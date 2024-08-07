@@ -76,11 +76,13 @@ int main() {
                 }
 
                 case 2: {
+                    // THiS IS THE MAIN LOGIC OF OUR SYSTEM
                     std::cout << "File with updated changes (this changes should already have been made): ";
                     std::string filename;
                     std::getline(std::cin, filename);
 
                     const std::string updated_file_user_filename = std::string{users[user_num]} + std::string{'/'} + std::string{filename};
+
                     merkle_tree altered_file_mt = merkle_tree(updated_file_user_filename.c_str());
 
                     for (int i = 0; i < 3; i++) {
@@ -88,8 +90,8 @@ int main() {
                         if (i != user_num) {
                             // Request for needed data
                             std::vector<int> missing_blocks = comparison(altered_file_mt, user_specific_filename.c_str());
-                            std::string transfer_filename = request_blocks(missing_blocks, updated_file_user_filename.c_str());
 
+                            std::string transfer_filename = request_blocks(missing_blocks, updated_file_user_filename.c_str());
                             // James this is where need your implemention 
                             //       - purpose is just to demonstrate that we have an encryption and decryption protocol
                             //       - the keys are included in the directories for alice, bob and charlie - see users[i] to see who we are sending too and which keys to use
