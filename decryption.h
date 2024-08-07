@@ -1,29 +1,34 @@
-#ifndef RECEIVE_AND_DECRYPT_H
-#define RECEIVE_AND_DECRYPT_H
+#ifndef DECRYPTION_H
+#define DECRYPTION_H
 
 #include <string>
 #include <vector>
-#include <openssl/rsa.h>
 
-// Function to load RSA private key from a PEM-formatted string
+// Load RSA public key from a PEM-formatted string
+RSA* load_public_key(const std::string& public_key_str);
+
+// Load RSA private key from a PEM-formatted string
 RSA* load_private_key(const std::string& private_key_str);
 
-// Function to load encrypted data from a file
+// Load encrypted data from a file
 std::vector<unsigned char> load_encrypted_data(const std::string& filename);
 
-// Function to verify the signature using the sender's public key
+// Load the signature from a file
+std::vector<unsigned char> load_signature(const std::string& filename);
+
+// Verify the signature using the sender's public key
 bool verify_signature(const std::vector<unsigned char>& data, 
                       const std::vector<unsigned char>& signature, 
                       RSA* sender_public_key);
 
-// Function to decrypt data using an RSA private key
-std::vector<unsigned char> rsa_decrypt(const std::vector<unsigned char>& encrypted_bytes, RSA* private_key);
+// Decrypt the encrypted data using the receiver's private key
+std::vector<unsigned char> decrypt_data(const std::vector<unsigned char>& encrypted_data, RSA* receiver_private_key);
 
-// Function to receive and decrypt data
+// Receive and decrypt data
 bool ReceiveAndDecrypt(const std::string& encryptedDataFilename, 
-                       const std::vector<unsigned char>& senderSignature, 
+                       const std::string& signatureFilename, 
                        const std::string& senderPublicKeyStr, 
                        const std::string& receiverPrivateKeyStr, 
                        std::vector<unsigned char>& decryptedData);
 
-#endif // RECEIVE_AND_DECRYPT_H
+#endif // DECRYPTION_H

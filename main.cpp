@@ -11,12 +11,22 @@
 #include "reconstruction.h"
 #include "request.h"
 #include <filesystem>
-
+#include "decryption.h"
+#include "encryption.h"
 void createMerkleTree(const std::string& filename);
 void copyFile(const std::string& sourceFile, const std::string& destinationFile);
 void deleteFile(const std::string& filename);
 void uploadFile(const std::string& sourceFile, const std::string& destinationFile);
-
+void EncryptAndSend(const std::string& requestedData, 
+                    const std::string& requesterPublicKey, 
+                    const std::string& senderPrivateKey, 
+                    const std::string& encryptedDataFilename, 
+                    const std::string& signatureFilename);
+bool ReceiveAndDecrypt(const std::string& encryptedDataFilename, 
+                       const std::string& signatureFilename, 
+                       const std::string& senderPublicKeyStr, 
+                       const std::string& receiverPrivateKeyStr, 
+                       std::vector<unsigned char>& decryptedData);
 int main() {
     try {
         while (true) {
