@@ -13,24 +13,40 @@ merkle_tree::merkle_tree(const char* filename) {
         std::exit(1);
     }
     
-    // // Move file pointer to store files size
-    // std::fseek(file, 0, SEEK_END);
-    // long file_size = std::ftell(file);
-    // std::fseek(file, 0, SEEK_SET); // Dont need this atm
+    // Move file pointer to store files size
+    std::fseek(file, 0, SEEK_END);
+    long file_size = std::ftell(file);
+    std::fseek(file, 0, SEEK_SET); // Dont need this atm
 
     unsigned char data[BLOCK_SIZE];
+    for (int i = 0 ; i < BLOCK_SIZE; i++) {
+        data[i] = 0;
+    }
 
     // Construct all child nodes
     std::vector<std::shared_ptr<merkle_node>> nodes;
     int bytes_read;
     int block_number = 0;
-    while ((bytes_read = fread(data, 1, BLOCK_SIZE, file)) != 0) {
-        std::string hash = SHA256_hash_as_string(data, bytes_read);
+
+    // Case of empty file
+    if (file_size == 0) {
+        std::cout << "file size should be 0?\n";
         
-        // New shared pointer to child node
+        std::string hash = SHA256_hash_as_string(data, 0);
         std::shared_ptr<merkle_node> new_child(new merkle_node(hash, block_number));
         nodes.push_back(new_child);
-        block_number++;
+    } else {
+        while ((bytes_read = fread(data, 1, BLOCK_SIZE, file)) != 0) {
+            for (int i = 0; i < BLOCK_SIZE; i++) std::cout << data[i];
+            // std::cout << "1 are we looping here?\n";
+            
+            std::string hash = SHA256_hash_as_string(data, bytes_read);
+            
+            // New shared pointer to child node
+            std::shared_ptr<merkle_node> new_child(new merkle_node(hash, block_number));
+            nodes.push_back(new_child);
+            block_number++;
+        }
     }
 
     // Merge to root

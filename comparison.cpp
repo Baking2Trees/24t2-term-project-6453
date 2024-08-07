@@ -1,5 +1,6 @@
 #include "comparison.h"
 #include <vector>
+#include <iostream>
 
 void analyse_changes(std::shared_ptr<merkle_node> cloud_mt, std::shared_ptr<merkle_node> local_mt, std::vector<int>& blocks) {
     // If the node hashes are equal we want do to nothing as means all children nodes are correct
@@ -7,7 +8,7 @@ void analyse_changes(std::shared_ptr<merkle_node> cloud_mt, std::shared_ptr<merk
         // If cloud node and local node not at chilren - search children
         // If cloud node is at children but local node is not - add all children of local node (deletion)
         // If local at children and cloud node is not - add all children of cloud node
-    
+
     if (cloud_mt == nullptr || local_mt == nullptr) {
         if (cloud_mt == nullptr && local_mt == nullptr) return;
         
@@ -27,6 +28,8 @@ void analyse_changes(std::shared_ptr<merkle_node> cloud_mt, std::shared_ptr<merk
     }
     
     if (cloud_mt->hash_ != local_mt->hash_) {
+        //std::cout << "Currently comparing: " << cloud_mt->hash_ << " to " << local_mt->hash_ << "\n";
+
         // Would be indicate of a minor change
         if (
             cloud_mt->left_child_ == nullptr &&
@@ -36,7 +39,6 @@ void analyse_changes(std::shared_ptr<merkle_node> cloud_mt, std::shared_ptr<merk
         ) {
             blocks.push_back(cloud_mt->rightmost_block_);
         }
-        
         // Analyse children
         analyse_changes(cloud_mt->left_child_, local_mt->left_child_, blocks);
         analyse_changes(cloud_mt->right_child_, local_mt->right_child_, blocks);

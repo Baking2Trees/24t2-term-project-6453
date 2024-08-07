@@ -46,8 +46,9 @@ std::string request_blocks(std::vector<int> missing_blocks, const char *filename
             size = BLOCK_SIZE;
         }
         fwrite(&size, sizeof(int), 1, transfer_file);
+        
         // Move file pointer
-        std::fseek(cloud_file, size, SEEK_SET);
+        std::fseek(cloud_file, byte_index, SEEK_SET);
         
         // Move (size) num bytes
         for (int i = 0; i < file_size; i++) {
